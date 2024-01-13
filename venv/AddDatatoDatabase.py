@@ -11,7 +11,7 @@ firebase_admin.initialize_app(cred, {
 })
 
 
-
+print("hhh")
 ref = db.reference('Students')
 data = {
     "321654":
