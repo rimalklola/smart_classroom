@@ -1,14 +1,18 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
+import os 
+from firebase_admin import credentials, firestore, initialize_app 
 
-cred = credentials.Certificate("serviceAccountKey.json")
+data = os.path.abspath(os.path.dirname(__file__)) + '\\smarttttt-94151-firebase-adminsdk-v5sfa-9fbface78c.json'
+cred = credentials.Certificate(data)
 firebase_admin.initialize_app(cred, {
-    'databaseURL': ""
+    'databaseURL': "https://smarttttt-94151-default-rtdb.europe-west1.firebasedatabase.app/"
 })
 
-ref = db.reference('Students')
 
+
+ref = db.reference('Students')
 data = {
     "321654":
         {
@@ -43,4 +47,14 @@ data = {
 }
 
 for key, value in data.items():
+    print(key,value)
     ref.child(key).set(value)
+
+
+
+
+
+
+
+
+

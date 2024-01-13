@@ -7,10 +7,12 @@ from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import  storage
 
-cred = credentials.Certificate("serviceAccountKey.json")
+data = os.path.abspath(os.path.dirname(__file__)) + "/smarttttt-94151-firebase-adminsdk-v5sfa-9fbface78c.json"
+cred = credentials.Certificate(data)
+
 firebase_admin.initialize_app(cred, {
-    'databaseURL': "",
-    'storageBucket': ""
+    'databaseURL': "https://smarttttt-94151-default-rtdb.europe-west1.firebasedatabase.app/",
+    'storageBucket': "gs://smarttttt-94151.appspot.com"
 })
 
 
@@ -23,12 +25,12 @@ studentIds = []
 for path in pathList:
     imgList.append(cv2.imread(os.path.join(folderPath, path)))
     studentIds.append(os.path.splitext(path)[0])
-
+    ''''
     fileName = f'{folderPath}/{path}'
     bucket = storage.bucket()
     blob = bucket.blob(fileName)
     blob.upload_from_filename(fileName)
-
+   '''''
 
     # print(path)
     # print(os.path.splitext(path)[0])

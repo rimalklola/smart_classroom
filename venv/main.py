@@ -11,21 +11,23 @@ from firebase_admin import storage
 import numpy as np
 from datetime import datetime
 
-cred = credentials.Certificate("serviceAccountKey.json")
+
+data = os.path.abspath(os.path.dirname(__file__)) + "/smarttttt-94151-firebase-adminsdk-v5sfa-9fbface78c.json"
+cred = credentials.Certificate(data)
+
 firebase_admin.initialize_app(cred, {
-    'databaseURL': "",
-    'storageBucket': ""
+    'databaseURL': "https://smarttttt-94151-default-rtdb.europe-west1.firebasedatabase.app/",
+    'storageBucket': "gs://smarttttt-94151.appspot.com"
 })
 
 bucket = storage.bucket()
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 
 imgBackground = cv2.imread('Resources/background.png')
 
-# Importing the mode images into a list
 folderModePath = 'Resources/Modes'
 modePathList = os.listdir(folderModePath)
 imgModeList = []
@@ -49,8 +51,9 @@ imgStudent = []
 
 while True:
     success, img = cap.read()
-
-    imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
+    if img is None :
+        print("hello",success)
+    imgS = cv2.resize(img, (10, 10))
     imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
 
     faceCurFrame = face_recognition.face_locations(imgS)
@@ -148,6 +151,7 @@ while True:
     else:
         modeType = 0
         counter = 0
-    # cv2.imshow("Webcam", img)
+    
+         # cv2.imshow("Webcam", img)
     cv2.imshow("Face Attendance", imgBackground)
     cv2.waitKey(1)
