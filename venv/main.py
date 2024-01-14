@@ -93,10 +93,12 @@ while True:
                 # Get the Data
                 studentInfo = db.reference(f'Students/{id}').get()
                 print(studentInfo)
+
                 # Get the Image from the storage
                 blob = bucket.get_blob(f'Images/{id}.png')
                 array = np.frombuffer(blob.download_as_string(), np.uint8)
                 imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
+                
                 # Update data of attendance
                 datetimeObject = datetime.strptime(studentInfo['last_attendance_time'],
                                                    "%Y-%m-%d %H:%M:%S")
