@@ -14,13 +14,12 @@ collection = db['attendance_records']
 
 bucket = storage.bucket()
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 
 imgBackground = cv2.imread('Resources/background.png')
 
-# Importing the mode images into a list
 folderModePath = 'Resources/Modes'
 modePathList = os.listdir(folderModePath)
 imgModeList = []
@@ -44,8 +43,9 @@ imgStudent = []
 
 while True:
     success, img = cap.read()
-
-    imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
+    if img is None :
+        print("hello",success)
+    imgS = cv2.resize(img, (10, 10))
     imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
 
     faceCurFrame = face_recognition.face_locations(imgS)
@@ -86,10 +86,12 @@ while True:
                 # Get the Data
                 studentInfo = db.reference(f'Students/{id}').get()
                 print(studentInfo)
+
                 # Get the Image from the storage
                 blob = bucket.get_blob(f'Images/{id}.png')
                 array = np.frombuffer(blob.download_as_string(), np.uint8)
                 imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
+                
                 # Update data of attendance
                 datetimeObject = datetime.strptime(studentInfo['last_attendance_time'],
                                                    "%Y-%m-%d %H:%M:%S")
@@ -144,6 +146,7 @@ while True:
     else:
         modeType = 0
         counter = 0
-    # cv2.imshow("Webcam", img)
+    
+         # cv2.imshow("Webcam", img)
     cv2.imshow("Face Attendance", imgBackground)
     cv2.waitKey(1)

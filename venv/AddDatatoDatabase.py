@@ -40,3 +40,6 @@ data = [
 
 # Insert data into the MongoDB collection
 collection.insert_many(data)
+
+for key, value in data.items():
+    ref.child(key).set(value)
