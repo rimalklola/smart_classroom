@@ -58,6 +58,7 @@ while True:
         for encodeFace, faceLoc in zip(encodeCurFrame, faceCurFrame):
             matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
             faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
+            
             # print("matches", matches)
             # print("faceDis", faceDis)
 
