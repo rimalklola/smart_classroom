@@ -4,21 +4,13 @@ import numpy as np
 import cv2
 import face_recognition
 import cvzone
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from firebase_admin import storage
-import numpy as np
+from pymongo import MongoClient
 from datetime import datetime
 
-
-data = os.path.abspath(os.path.dirname(__file__)) + "/smarttttt-94151-firebase-adminsdk-v5sfa-9fbface78c.json"
-cred = credentials.Certificate(data)
-
-firebase_admin.initialize_app(cred, {
-    'databaseURL': "https://smarttttt-94151-default-rtdb.europe-west1.firebasedatabase.app/",
-    'storageBucket': "gs://smarttttt-94151.appspot.com"
-})
+# MongoDB connection
+client = MongoClient('mongodb+srv://developerbadreddine:zt23FgyjykIYOW8J@cluster0.ns7t9lp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+db = client['smart_classroom_db']
+collection = db['attendance_records']
 
 bucket = storage.bucket()
 
@@ -66,6 +58,7 @@ while True:
         for encodeFace, faceLoc in zip(encodeCurFrame, faceCurFrame):
             matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
             faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
+            
             # print("matches", matches)
             # print("faceDis", faceDis)
 
